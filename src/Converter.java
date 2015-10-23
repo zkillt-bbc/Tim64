@@ -10,20 +10,21 @@ public class Converter {
 	public static String decoded = "";
 	private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	private static BigInteger bytes;
-	private static BigInteger divider = new BigInteger("9");
-	private static BigInteger multiplier = new BigInteger("-2");
+	private static final BigInteger divider = new BigInteger(/**getRandomNumber() **/ "7");
+	private static final BigInteger multiplier = new BigInteger(/**getRandomNumber() **/ "3");
 	protected static String input = "";
 	
 	// Encrypts a given input (String and numbers possible)
-	protected static void encrypt() throws IOException {
+	protected static String encrypt(String input) throws IOException {
 
 		String cacheBytes = "";
 
-		System.out.println("Geben sie den zu verschl\u00fcsselnden Text ein: ");
+//		System.out.println("Geben sie den zu verschl\u00fcsselnden Text ein: ");
 
-		decoded = br.readLine(); // saves the input String 
-		decoded.replaceAll("ü", "\u00fc");
-		// if input is not empty programm starts
+//		decoded = br.readLine(); // saves the input String 
+//		decoded.replaceAll("ü", "\u00fc");
+		decoded = input;
+		// if input is not empty program starts
 		if (!decoded.isEmpty()) {
 			byte[] b = decoded.getBytes(StandardCharsets.UTF_8); // creates a byteArray with UTF-8 Encoding
 
@@ -32,37 +33,40 @@ public class Converter {
 			}
 			
 			try {
-				bytes = new BigInteger(cacheBytes); // byteString gets convertet into a number
+				bytes = new BigInteger(cacheBytes); // byteString gets converted into a number
 			} catch(NumberFormatException e) {
-				System.out.println("Die eingabe ist ungültig! lel \n");
-				return;
+				return "Eingabe ist ungültig!";
 			}
 			bytes = bytes.divide(divider); // bytes are getting divided
 			bytes = bytes.multiply(multiplier); // bytes are getting multiplied
 
-			System.out.println("ENCODED: " + bytes); // System output: Tim64 encoded String
+//			System.out.println("ENCODED: " + bytes); // System output: Tim64 encoded String
 		} else {
 			new Encryptor();
 		}
+		
+		String result = bytes.toString();
+		return result;
 	}
 
 	// decrypts a given Tim64 number
-	private static void decrypt() throws IOException {
+	protected static String decrypt(String input) throws IOException {
 		String cacheString = "";
 		String[] byteCode = {};
 		ArrayList<Byte> singleBytes = new ArrayList<Byte>();
 		byte[] singleBytes2;
 
-		System.out.println("Geben sie die zu entschl\u00fcsselnden Zahlen ein: ");
-		decoded = br.readLine(); // saves input
+//		System.out.println("Geben sie die zu entschl\u00fcsselnden Zahlen ein: ");
+//		decoded = br.readLine(); // saves input
+		
+		decoded = input;
 		
 		// if String is not empty program starts
 		if(!decoded.isEmpty()) {
 			try {
 				bytes = new BigInteger(decoded); // Tim64 bytes are getting converted into numbers
 			} catch(NumberFormatException e) {
-				System.out.println("Die eingabe ist ungültig! \n");
-				return;
+				return "Eingabe ist ungültig!";
 			}
 			bytes = bytes.divide(multiplier); // bytes are multiplied
 			bytes = bytes.multiply(divider); // bytes are divided
@@ -84,9 +88,10 @@ public class Converter {
 			}
 	
 			String decoded = new String(singleBytes2, "UTF-8"); // the bytes in the byteArray are converted into a String
-			System.out.println("DECODED: " + decoded);
+//			System.out.println("DECODED: " + decoded);
+			return decoded;
 		} else {
-			new Encryptor();
+			return "Eingabe ist ungültig";
 		}
 	}
 	
@@ -98,11 +103,12 @@ public class Converter {
 	private static void checkinput(String input) throws IOException {
 		
 		if (Converter.input.toLowerCase().equals("e")) {
-			encrypt();
+			encrypt(input);
 		} else if (Converter.input.toLowerCase().equals("d")) {
-			decrypt();
+			decrypt(input);
 		} else if (Converter.input.toLowerCase().equals("exit")) {
 			System.out.println("Tim64 is shutting down...");
+			delay(1000);
 			System.out.println("Successful!");
 			System.exit(0);
 		} else {
@@ -111,4 +117,22 @@ public class Converter {
 		}
 		System.out.println("Wollen sie erneut eine Eingabe machen?");
 	}
+	
+    public static void delay(int millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException exp) {
+        }
+    }
+	
+//	public static String getRandomNumber() {
+//		Random rand = new Random();
+//		String result = "4";
+//		int min = 15;
+//		int max = 15;
+//		
+//	    int randomNum = rand.nextInt((max - min) + 1) + min;
+//	    result += randomNum;
+//	    return result;
+//	}
 }
