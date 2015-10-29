@@ -1,3 +1,6 @@
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -16,6 +19,8 @@ public class EncryptGUI {
 	private JButton encryptButton = new JButton("Encrypt");
 	private JTextPane inputField = new JTextPane();
 	private JTextArea textArea = new JTextArea();
+	private JButton copyBtn = new JButton("Copy to Clipboard");
+
 	
 	public EncryptGUI() {
 		
@@ -51,6 +56,11 @@ public class EncryptGUI {
 		textArea.setColumns(10);
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(false);
+		
+		copyBtn.setBounds(743, 181, 141, 23);
+		copyBtn.setEnabled(false);
+		
+		frame.getContentPane().add(copyBtn);
 		frame.setVisible(true);
 
 		setUpListeners();
@@ -62,11 +72,22 @@ public class EncryptGUI {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					textArea.setText(Converter.encrypt(inputField.getText()));
+					if(inputField.getText().equals("") || inputField.getText().equals(null)) {
+						copyBtn.setEnabled(false);
+					} else {
+						copyBtn.setEnabled(true);
+					}
 				} catch (IOException e1) {
 					System.out.println("Irgendwas ist nicht gut");
-					//					e1.printStackTrace();
 				}
-				System.out.println("Encrypt gedrückt");
+			}
+		});
+		
+		copyBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				StringSelection selection = new StringSelection(textArea.getText());
+				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+				clipboard.setContents(selection, selection);
 			}
 		});
 	}

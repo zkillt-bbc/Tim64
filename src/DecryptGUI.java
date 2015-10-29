@@ -8,6 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.JTextField;
 
 public class DecryptGUI {
 
@@ -15,6 +16,8 @@ public class DecryptGUI {
 	private JButton decryptButton = new JButton("Decrypt");
 	private JTextArea textArea = new JTextArea(10, 1);
 	private JTextArea inputField = new JTextArea();
+	private JTextField textField;
+	private JTextField textField_1;
 
 	
 	public DecryptGUI() {
@@ -31,7 +34,7 @@ public class DecryptGUI {
 		lblEncryptedMessage.setBounds(44, 182, 153, 14);
 		frame.getContentPane().add(lblEncryptedMessage);
 		
-		decryptButton.setBounds(766, 55, 89, 20);
+		decryptButton.setBounds(766, 152, 89, 20);
 		frame.getContentPane().add(decryptButton);
 		textArea.setEditable(false);
 		textArea.setColumns(10);
@@ -51,6 +54,22 @@ public class DecryptGUI {
 		inputField.setColumns(10);
 		scrollPane.setViewportView(inputField);
 		
+		textField = new JTextField();
+		textField.setEnabled(false);
+		textField.setBounds(766, 87, 86, 20);
+		frame.getContentPane().add(textField);
+		textField.setColumns(10);
+		
+		textField_1 = new JTextField();
+		textField_1.setEnabled(false);
+		textField_1.setBounds(766, 121, 86, 20);
+		frame.getContentPane().add(textField_1);
+		textField_1.setColumns(10);
+		
+		JLabel lblEnterDecryptionKey = new JLabel("Decryption key:");
+		lblEnterDecryptionKey.setBounds(766, 55, 118, 14);
+		frame.getContentPane().add(lblEnterDecryptionKey);
+		
 		setUpListeners();
 	}
 	
@@ -63,9 +82,7 @@ public class DecryptGUI {
 					textArea.setText(Converter.decrypt(inputField.getText()));
 				} catch (IOException e1) {
 					System.out.println("Irgendwas ist nicht gut");
-					//					e1.printStackTrace();
 				}
-				System.out.println("Encrypt gedrückt");
 			}
 		});
 	}
