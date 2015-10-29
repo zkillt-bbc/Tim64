@@ -1,5 +1,7 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 
 import javax.swing.JButton;
@@ -7,8 +9,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 
 public class DecryptGUI {
 
@@ -16,8 +18,8 @@ public class DecryptGUI {
 	private JButton decryptButton = new JButton("Decrypt");
 	private JTextArea textArea = new JTextArea(10, 1);
 	private JTextArea inputField = new JTextArea();
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField multiplier;
+	private JTextField divider;
 
 	
 	public DecryptGUI() {
@@ -25,6 +27,8 @@ public class DecryptGUI {
 		frame.getContentPane().setLayout(null);
 		frame.setVisible(true);
 		frame.setSize(900, 300);
+		frame.setLocation(730, 870);
+
 		
 		JLabel lblNewLabel = new JLabel("Enter encrypted code to decrypt:");
 		lblNewLabel.setBounds(44, 30, 225, 14);
@@ -54,17 +58,19 @@ public class DecryptGUI {
 		inputField.setColumns(10);
 		scrollPane.setViewportView(inputField);
 		
-		textField = new JTextField();
-		textField.setEnabled(false);
-		textField.setBounds(766, 87, 86, 20);
-		frame.getContentPane().add(textField);
-		textField.setColumns(10);
+		multiplier = new JTextField();
+		multiplier.setEnabled(true);
+		multiplier.setBounds(766, 87, 86, 20);
+		frame.getContentPane().add(multiplier);
+		multiplier.setColumns(1);
 		
-		textField_1 = new JTextField();
-		textField_1.setEnabled(false);
-		textField_1.setBounds(766, 121, 86, 20);
-		frame.getContentPane().add(textField_1);
-		textField_1.setColumns(10);
+		divider = new JTextField();
+		divider.setEnabled(true);
+		divider.setBounds(766, 121, 86, 20);
+		frame.getContentPane().add(divider);
+		divider.setColumns(1);
+		
+		decryptButton.setEnabled(false);
 		
 		JLabel lblEnterDecryptionKey = new JLabel("Decryption key:");
 		lblEnterDecryptionKey.setBounds(766, 55, 118, 14);
@@ -79,10 +85,34 @@ public class DecryptGUI {
 		decryptButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					textArea.setText(Converter.decrypt(inputField.getText()));
+					textArea.setText(Converter.decrypt(inputField.getText(), multiplier.getText(), divider.getText()));
 				} catch (IOException e1) {
 					System.out.println("Irgendwas ist nicht gut");
 				}
+			}
+		});
+		
+		// Start-Button Listener
+		divider.addKeyListener(new KeyAdapter() {
+		
+			public void keyReleased(KeyEvent e) {
+				if(multiplier.getText().equals("") || multiplier.getText().equals(null) || divider.getText().equals("") || divider.getText().equals(null)) {
+	        		decryptButton.setEnabled(false);
+	        	} else {
+	        		decryptButton.setEnabled(true);
+	        	}
+			}
+		});
+		
+		// Start-Button Listener
+		multiplier.addKeyListener(new KeyAdapter() {
+		
+			public void keyReleased(KeyEvent e) {
+				if(multiplier.getText().equals("") || multiplier.getText().equals(null) || divider.getText().equals("") || divider.getText().equals(null)) {
+	        		decryptButton.setEnabled(false);
+	        	} else {
+	        		decryptButton.setEnabled(true);
+	        	}
 			}
 		});
 	}

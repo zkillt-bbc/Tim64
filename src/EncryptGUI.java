@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
 
@@ -20,16 +21,20 @@ public class EncryptGUI {
 	private JTextPane inputField = new JTextPane();
 	private JTextArea textArea = new JTextArea();
 	private JButton copyBtn = new JButton("Copy to Clipboard");
+	public static JTextField multiplier;
+	public static JTextField divider;
 
 	
 	public EncryptGUI() {
 		
 		JScrollPane scroll = new JScrollPane (ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scroll.setLocation(44, 134);
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		frame.setResizable(false);
 		frame.getContentPane().setLayout(null);
 		frame.setSize(900, 300);
+		frame.setLocation(730, 200);
+
 		
 		scroll.setSize(689, 117);
 		
@@ -57,8 +62,22 @@ public class EncryptGUI {
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(false);
 		
-		copyBtn.setBounds(743, 181, 141, 23);
+		copyBtn.setBounds(743, 227, 141, 23);
 		copyBtn.setEnabled(false);
+		
+		multiplier = new JTextField();
+		multiplier.setEnabled(true);
+		multiplier.setEditable(false);
+		multiplier.setBounds(766, 133, 86, 20);
+		frame.getContentPane().add(multiplier);
+		multiplier.setColumns(1);
+		
+		divider = new JTextField();
+		divider.setEnabled(true);
+		divider.setEditable(false);
+		divider.setBounds(766, 170, 86, 20);
+		frame.getContentPane().add(divider);
+		divider.setColumns(1);
 		
 		frame.getContentPane().add(copyBtn);
 		frame.setVisible(true);
