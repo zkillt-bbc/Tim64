@@ -15,10 +15,15 @@ public class Converter {
 
 		if (!input.equals("") && !input.equals(null)) {
 			decoded = input;
-		
+			
 			BigInteger divider = new BigInteger(getRandomNumber());
 			BigInteger multiplier = new BigInteger(getRandomNumber());
 			
+			if(divider.equals("0")) {
+				divider = new BigInteger(getRandomNumber());
+			} else if(multiplier.equals("0")) {
+				multiplier = new BigInteger(getRandomNumber());
+			}
 			EncryptGUI.divider.setText(divider.toString());
 			EncryptGUI.multiplier.setText(multiplier.toString());
 			
@@ -33,9 +38,12 @@ public class Converter {
 			} catch(NumberFormatException e) {
 				return "Eingabe ist ungültig!";
 			}
-			bytes = bytes.divide(divider); // bytes are getting divided
-			bytes = bytes.multiply(multiplier); // bytes are getting multiplied
-
+			try {
+				bytes = bytes.divide(divider); // bytes are getting divided
+				bytes = bytes.multiply(multiplier); // bytes are getting multiplied
+			} catch(ArithmeticException e ) {
+				encrypt(input);
+			}
 		} else {
 			return "Bitte geben Sie etwas ein!";
 		}
@@ -75,7 +83,7 @@ public class Converter {
 					try {
 					singleBytes.add((byte) Integer.parseInt(s)); // every string in StringArray is added to Byte Arraylist 
 					} catch(NumberFormatException e) {
-						return "Eingabe ungültig";
+						return "Eingabe ungültig!";
 					}
 				}
 			}
@@ -106,6 +114,11 @@ public class Converter {
 		int max = 15;
 		
 	    int randomNum = rand.nextInt((max - min) + 1) + min;
+	    
+	    while(randomNum == 0) {
+	    	randomNum = rand.nextInt((max - min) + 1) + min;
+	    }
+	    
 	    result += randomNum;
 	    return result;
 	}
